@@ -105,8 +105,6 @@ function makeDecimal() {
 function updateDisplay() {
     if (display === 'ALEEE JOENGE') {
         displayScreen.textContent = display;
-        hiddenGif.style.display = 'flex'
-            soundEffect.play()
         return;
     }
     display = (+display).toString();
@@ -127,53 +125,49 @@ function clear() {
 }
 
 function update(event) {
-    if (event.target.classList.contains('num')) {
-        updateNumbers(event);
-    }
+    const targetClassList = event.target.classList;
 
-    else if (event.target.classList.contains('op')) {
-        if (!operation) {
-            operation = event.target.textContent;
+    switch (true) {
+        case targetClassList.contains('num'):
+            updateNumbers(event);
+            break;
+        case targetClassList.contains('op'):
+            if (!operation) {
+                operation = event.target.textContent;
 
-            if (!num1 && !(display === '0')) {
-                num1 = display
+                if (!num1 && display !== '0') {
+                    num1 = display;
+                }
+            } else {
+                display = operate(num1, operation, num2);
+                num1 = display;
+                operation = event.target.textContent;
+                num2 = "";
             }
-        }
-        else {
-            display = operate(num1, operation, num2)
-            num1 = display;
-            operation = event.target.textContent;
-            num2 = ""
-        }
+            break;
+        case targetClassList.contains('eq'):
+            if (operation) {
+                display = operate(num1, operation, num2);
+                num1 = '';
+                num2 = '';
+                operation = null;
+            }
+            break;
+        case targetClassList.contains('clear'):
+            clear();
+            break;
+        case targetClassList.contains('backspace'):
+            backspace();
+            break;
+        case targetClassList.contains('sign'):
+            flipSign();
+            break;
+        case targetClassList.contains('dot'):
+            makeDecimal();
+            break;
     }
 
-    else if (event.target.classList.contains('eq')) {
-        if (operation) {
-            display = operate(num1, operation, num2)
-            num1 = ''
-            num2 = ''
-            operation = null
-        }
-        else {return}
-    }
-
-    else if (event.target.classList.contains('clear')) {
-        clear()
-    }
-
-    else if (event.target.classList.contains('backspace')) {
-        backspace()
-    }
-
-    else if (event.target.classList.contains('sign')) {
-        flipSign();
-    }
-
-    else if (event.target.classList.contains('dot')) {
-        makeDecimal();
-    }
-
-    updateDisplay()
+    updateDisplay();
 }
 
 buttons.addEventListener('click', update, true)
