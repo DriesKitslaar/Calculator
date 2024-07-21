@@ -6,6 +6,10 @@ let display = '0';
 const keys = document.querySelectorAll('.btn')
 const buttons = document.getElementById('calculator')
 const displayScreen = document.getElementById('display');
+const div = document.querySelector('div')
+const hiddenGif = document.getElementById('hiddenGif'); // reference to the hidden gif
+const soundEffect = document.getElementById('soundEffect'); // reference to the sound effect
+
 updateDisplay()
 
 
@@ -22,6 +26,8 @@ function operate(num1, operation, num2) {
             return (num1 * num2).toFixed(2).toString();
         case '÷':
             if (num2 === 0) {
+                hiddenGif.style.display = 'flex'
+                soundEffect.play()
                 return 'ALEEE JOENGE'
                 // jumpscare toevoegen
             } else {
@@ -99,6 +105,8 @@ function makeDecimal() {
 function updateDisplay() {
     if (display === 'ALEEE JOENGE') {
         displayScreen.textContent = display;
+        hiddenGif.style.display = 'flex'
+            soundEffect.play()
         return;
     }
     display = (+display).toString();
@@ -113,6 +121,9 @@ function clear() {
     num2= "";
     display = '0';
     operation = null
+    hiddenGif.style.display = 'none'; // hide the gif when cleared
+    soundEffect.pause(); // stop the sound when cleared
+    soundEffect.currentTime = 0; // reset sound to start
 }
 
 function update(event) {
@@ -182,6 +193,3 @@ keys.forEach(key => {
         }, 150)
     });
 });
-
-
-
