@@ -10,6 +10,7 @@ const div = document.querySelector('div')
 const hiddenGif = document.getElementById('hiddenGif'); // reference to the hidden gif
 const soundEffect = document.getElementById('soundEffect'); // reference to the sound effect
 
+
 updateDisplay()
 
 
@@ -64,7 +65,7 @@ function backspace() {
     else {
         if (num1) {
             num1 = num1.slice(0,-1);
-            display = 0
+            display = num1
         }
     }
 }
